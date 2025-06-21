@@ -18,6 +18,9 @@ class BelHouse3DSemSegDataset(Dataset):
         if len(self.files) == 0:
             raise RuntimeError(f"No .npy files found in {search_path}")
 
+        self.label_values = list(range(19))   
+        self.ignored_labels = []             
+
     def __len__(self):
         return len(self.files)
 
@@ -28,8 +31,11 @@ class BelHouse3DSemSegDataset(Dataset):
         else:
             indices = np.random.choice(data.shape[0], self.num_points, replace=True)
         data = data[indices]
+
         points = data[:, :3].astype(np.float32)
         labels = data[:, 3].astype(np.int64)
+
         if self.transform:
             points = self.transform(points)
+
         return torch.from_numpy(points), torch.from_numpy(labels)
