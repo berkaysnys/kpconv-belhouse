@@ -179,7 +179,10 @@ class ModelTrainer:
                 t += [time.time()]
 
                 if 'cuda' in self.device.type:
-                    batch.to(self.device)
+                    if isinstance(batch, (list, tuple)):
+                        batch = [b.to(self.device) for b in batch]
+                    else:
+                        batch.to(self.device)
 
                 # zero the parameter gradients
                 self.optimizer.zero_grad()
