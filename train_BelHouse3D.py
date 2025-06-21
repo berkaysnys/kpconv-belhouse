@@ -1,6 +1,7 @@
 import os
 import torch
 import numpy as np
+open('/content/kpconv-belhouse/datasets/__init__.py', 'a').close()
 from torch.utils.data import DataLoader
 from datasets.BelHouse3D import BelHouse3DSemSegDataset
 from utils.config import Config
@@ -108,11 +109,7 @@ if __name__ == '__main__':
 
     # Initialize KPConv model
     print("Initializing KPConv model...")
-    model = KPFCNN(
-        config=config,
-        label_values=list(range(config.num_classes)),
-        ignored_labels=[]
-    )
+    model = KPFCNN(config, train_dataset.label_values, train_dataset.ignored_labels)
 
     # Create trainer and train
     print("Starting training...")
